@@ -310,6 +310,103 @@ output/
 
 ---
 
+## Demo Walkthrough
+
+A step-by-step demo showing the pipeline's progression from fully offline to AI-powered creative generation. API key is set via `AI_GATEWAY_API_KEY` in the environment.
+
+### 1. Offline Composition (No AI)
+
+Start with the simplest case — local assets only, no API calls, no branding.
+
+```bash
+amplify-ads generate examples/outdoor-gear-simple.json
+```
+
+**HIGHLIGHTS:**
+
+- Works completely offline — no API key needed
+- Products with local images (`hiking-daypack`, `insulated-water-bottle`) compose immediately
+- `trail-running-shoes` has no image and no API key, so it's skipped
+- Campaign `message` ("Own the trail this season") is used as the headline on every creative
+- Output lands in `output/trail-ready-2026-ca/001/` with versioned folders
+- Three aspect ratios per product: 1:1 square, 9:16 story, 16:9 landscape
+
+### 2. Image Enhancement (`--enhance-images`)
+
+Same campaign, but now AI recomposes the provided product images for better ad composition.
+
+```bash
+amplify-ads generate examples/outdoor-gear-simple.json --enhance-images
+```
+
+**HIGHLIGHTS:**
+
+- `--enhance-images` sends existing product photos through img-to-img AI (Gemini 2.5 Flash)
+- Images are recomposed as full-bleed backgrounds with breathing room for text overlays
+- Enhanced images are cached at `assets/products/{slug}/enhanced.png` for reuse
+- `trail-running-shoes` still has no source image, so it's generated from scratch via AI
+- Render mode switches to `overlay` (cover) for enhanced/generated images vs `placement` (contain) for raw photos
+- Output is version `002` — previous run is preserved
+
+### 3. Branding + AI Copy (`--generate-copy`)
+
+Switch to the branded version of the same campaign and add AI-generated headlines and CTAs.
+
+```bash
+amplify-ads generate examples/outdoor-gear-with-branding.json --enhance-images --generate-copy
+```
+
+**HIGHLIGHTS:**
+
+- `branding` config adds: green primary (`#4caf50`), orange secondary (`#ff9800`), dark green background (`#1a2e1a`), "rugged, natural, adventurous" style
+- Brand colors applied to canvas background and CTA buttons
+- Style hint ("rugged, natural, adventurous") is passed to AI image generation prompts
+- WCAG AA contrast checking auto-corrects text colors if they fail against the background
+- `--generate-copy` replaces the static campaign message with per-product AI-generated headlines and CTAs
+- Compare the output side-by-side with the unbranded version to see the difference
+
+### 4. Skincare — Minimal Config, Full AI
+
+A completely different brand — soft, elegant, no local assets at all. Everything is AI-generated.
+
+```bash
+amplify-ads generate examples/skincare-minimal.json --enhance-images --generate-copy
+```
+
+**HIGHLIGHTS:**
+
+- No product images provided — all three products are generated from their descriptions alone
+- Branding style is "soft, elegant, clean" — produces a completely different visual feel from outdoor gear
+- Shows that the same pipeline adapts to very different brand aesthetics
+- AI copy generates beauty/skincare-appropriate headlines and CTAs
+
+### 5. Coffee Multi-Product — Warm Premium Branding
+
+A third brand — warm, artisan coffee aesthetic with a mix of provided and generated images.
+
+```bash
+amplify-ads generate examples/coffee-multi-product.json --generate-copy --format webp
+```
+
+**HIGHLIGHTS:**
+
+- Warm color palette (copper `#c8a27a`, dark brown `#1b1008`) creates an artisan feel
+- `nitro-cold-brew-can` has a local image; the other two products are generated
+- `--format webp` outputs WebP instead of PNG — smaller file sizes for web delivery
+- Shows graceful degradation: products with images use them, products without get AI-generated ones
+- Three distinct brand looks across the demo (outdoor, skincare, coffee) from the same tool
+
+### Key Points to Mention
+
+- **Offline by default** — AI features are opt-in via flags; the core pipeline needs zero API calls
+- **Single API key** — Vercel AI Gateway routes one key to any supported model (Gemini, OpenAI, Claude, etc.)
+- **Versioned output** — every run creates a new numbered folder (`001`, `002`, …), nothing is overwritten
+- **Branding drives everything** — colors, style hints, contrast checking, and AI prompts all flow from the `branding` config
+- **Graceful degradation** — enhancement failures fall back to the original image, copy failures fall back to the campaign message, missing images are generated or skipped
+- **Asset caching** — generated and enhanced images are saved in `assets/products/` and reused on subsequent runs
+
+---
+
 ## Design Decisions
 
 - **Offline by default** — The pipeline works entirely locally with existing assets. AI image generation, enhancement, and AI copy are opt-in via explicit CLI flags.
