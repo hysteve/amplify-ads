@@ -40,8 +40,7 @@ export async function resolveAllAssets(
     const spinner = ora({ text: `Generating image for ${result.name}...`, indent: 2 }).start();
     try {
       const imagePath = await generateProductImage(
-        result.name,
-        result.slug,
+        { name: result.name, description: result.description, slug: result.slug },
         { audience: brief.audience, message: brief.message },
         options.generator,
       );

@@ -2,6 +2,7 @@ import type { ProductBrief } from "../types.js";
 export type ResolutionResult = {
     slug: string;
     name: string;
+    description: string;
 } & ({
     found: true;
     imagePath: string;

@@ -1,0 +1,18 @@
+{
+  "name": "Summer Kicks 2026",
+  "region": "US",
+  "audience": "18-35 sneaker enthusiasts",
+  "message": "Step into summer with bold new styles",
+  "products": [
+    {
+      "name": "Classic Sneaker",
+      "slug": "classic-sneaker",
+      "description": "White leather low-top sneaker with a gum sole and minimalist design"
+    },
+    {
+      "name": "Retro Runner",
+      "slug": "retro-runner",
+      "description": "Vintage-inspired mesh running shoe in navy and orange colorway"
+    }
+  ]
+}

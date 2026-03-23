@@ -4,7 +4,7 @@
   "audience": "Fitness enthusiasts",
   "message": "Fuel your workout with clean energy",
   "products": [
-    { "name": "Protein Bar" },
-    { "name": "Energy Drink" }
+    { "name": "Protein Bar", "description": "Chocolate-coated high-protein snack bar with visible oat and nut texture" },
+    { "name": "Energy Drink", "description": "Sleek matte-black can with neon green accents, sugar-free sports energy drink" }
   ]
 }

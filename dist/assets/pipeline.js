@@ -23,7 +23,7 @@ export async function resolveAllAssets(brief, options) {
         }
         const spinner = ora({ text: `Generating image for ${result.name}...`, indent: 2 }).start();
         try {
-            const imagePath = await generateProductImage(result.name, result.slug, { audience: brief.audience, message: brief.message }, options.generator);
+            const imagePath = await generateProductImage({ name: result.name, description: result.description, slug: result.slug }, { audience: brief.audience, message: brief.message }, options.generator);
             spinner.succeed(`${result.name} → ${imagePath}`);
             resolved.push({
                 slug: result.slug,

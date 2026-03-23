@@ -7,11 +7,13 @@
   "products": [
     {
       "name": "Protein Bar",
+      "description": "Chocolate-coated high-protein snack bar with visible oat and nut texture",
       "slug": "protein-bar",
       "image": "assets/products/protein-bar/source.png"
     },
     {
       "name": "Energy Drink",
+      "description": "Sleek matte-black can with neon green accents, sugar-free sports energy drink",
       "slug": "energy-drink",
       "image": "assets/products/energy-drink/source.png"
     }

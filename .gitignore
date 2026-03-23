@@ -1,0 +1,20 @@
+node_modules/
+dist/
+output/
+*.tsbuildinfo
+
+# Generated/resolved assets
+assets/products/*/generated.*
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+*.swp
+*.swo

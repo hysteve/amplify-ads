@@ -43,8 +43,13 @@ function validateCampaign(data: unknown): CampaignBrief {
       throw new Error(`Product at index ${i} is missing required field: "name"`);
     }
 
+    if (typeof prod["description"] !== "string" || prod["description"].trim() === "") {
+      throw new Error(`Product at index ${i} is missing required field: "description"`);
+    }
+
     return {
       name: prod["name"] as string,
+      description: prod["description"] as string,
       slug:
         typeof prod["slug"] === "string" && prod["slug"].trim() !== ""
           ? (prod["slug"] as string)

@@ -4,8 +4,8 @@
   "audience": "Skincare enthusiasts aged 25-40",
   "message": "Your skin deserves better this summer",
   "products": [
-    { "name": "Hydrating Serum" },
-    { "name": "SPF 50 Moisturizer" },
-    { "name": "Vitamin C Cleanser" }
+    { "name": "Hydrating Serum", "description": "Clear glass dropper bottle with pale gold serum, minimalist white label" },
+    { "name": "SPF 50 Moisturizer", "description": "Soft-squeeze tube in pastel coral with a matte finish, broad-spectrum sunscreen moisturizer" },
+    { "name": "Vitamin C Cleanser", "description": "Frosted orange pump bottle with a citrus-inspired design, brightening facial cleanser" }
   ]
 }

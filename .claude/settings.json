@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsx:*)",
+      "Read(//System/Library/Fonts/**)",
+      "Read(//System/Library/Fonts/Supplemental/**)"
+    ]
+  }
+}

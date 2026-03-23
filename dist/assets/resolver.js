@@ -32,20 +32,20 @@ export async function resolveProduct(product) {
     if (product.image) {
         const explicitPath = resolve(product.image);
         if (await fileExists(explicitPath)) {
-            return { slug, name: product.name, found: true, imagePath: explicitPath };
+            return { slug, name: product.name, description: product.description, found: true, imagePath: explicitPath };
         }
     }
     // 2. Convention-based source image
     const source = await findSourceImage(slug);
     if (source) {
-        return { slug, name: product.name, found: true, imagePath: source };
+        return { slug, name: product.name, description: product.description, found: true, imagePath: source };
     }
     // 3. Previously generated image
     const generated = await findGeneratedImage(slug);
     if (generated) {
-        return { slug, name: product.name, found: true, imagePath: generated };
+        return { slug, name: product.name, description: product.description, found: true, imagePath: generated };
     }
     // 4. Needs generation
-    return { slug, name: product.name, found: false };
+    return { slug, name: product.name, description: product.description, found: false };
 }
 //# sourceMappingURL=resolver.js.map

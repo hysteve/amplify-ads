@@ -33,8 +33,12 @@ function validateCampaign(data) {
         if (typeof prod["name"] !== "string" || prod["name"].trim() === "") {
             throw new Error(`Product at index ${i} is missing required field: "name"`);
         }
+        if (typeof prod["description"] !== "string" || prod["description"].trim() === "") {
+            throw new Error(`Product at index ${i} is missing required field: "description"`);
+        }
         return {
             name: prod["name"],
+            description: prod["description"],
             slug: typeof prod["slug"] === "string" && prod["slug"].trim() !== ""
                 ? prod["slug"]
                 : slugify(prod["name"]),

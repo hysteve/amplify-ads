@@ -1,6 +1,7 @@
 export type ProductBrief = {
   slug?: string;
   name: string;
+  description: string;
   image?: string | undefined;
 };
 
@@ -65,7 +66,9 @@ export type GeneratedProductMeta = {
   updatedAt: string;
   ratios: string[];
   sourceImage: string;
-  imageGenerationModel?: string;
+  imageGenerated: boolean;
+  copyGenerated: boolean;
+  copy: { headline: string; cta: string | undefined };
 };
 
 export type Meta = {
@@ -76,7 +79,13 @@ export type Meta = {
     region: string;
     audience: string;
   };
-  generatedProducts: GeneratedProductMeta[];
+  generation: {
+    imageModel: string | undefined;
+    copyModel: string | undefined;
+    format: string;
+    templates: string[];
+  };
+  products: GeneratedProductMeta[];
   createdAt: string;
   updatedAt: string;
 };

@@ -7,18 +7,22 @@
   "products": [
     {
       "name": "Wireless Earbuds",
-      "slug": "wireless-earbuds"
+      "slug": "wireless-earbuds",
+      "description": "Compact white wireless earbuds with a rounded charging case and LED indicator"
     },
     {
       "name": "Laptop Stand",
-      "slug": "laptop-stand"
+      "slug": "laptop-stand",
+      "description": "Adjustable aluminum laptop riser in space gray with ventilation cutouts"
     },
     {
       "name": "USB-C Hub",
-      "slug": "usb-c-hub"
+      "slug": "usb-c-hub",
+      "description": "Slim brushed-aluminum USB-C dock with HDMI, USB-A, and SD card ports"
     },
     {
-      "name": "Phone Charger Pad"
+      "name": "Phone Charger Pad",
+      "description": "Round fabric-covered wireless charging pad in charcoal with a subtle LED ring"
     }
   ]
 }
