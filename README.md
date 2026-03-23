@@ -2,6 +2,8 @@
 
 A local-first CLI tool that generates social ad creatives across multiple aspect ratios using GenAI + template-based composition.
 
+**▶️ Check out the [product demo on youtube](https://youtu.be/WXBlDuf6wUc)**
+
 ---
 
 # Objectives
