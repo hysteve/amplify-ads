@@ -68,6 +68,34 @@ cmd interactive # run interactive mode
 --out-dir # the destination directory for creative
 ```
 
+# Basic usage
+
+node dist/cli.js generate examples/fitness-minimal.json
+
+# With custom output directory
+
+node dist/cli.js generate examples/skincare-minimal.json --out-dir ./creatives
+
+# With AI image generation options (for Phase 2+)
+
+node dist/cli.js generate examples/coffee-single-product.json \
+ --model "dall-e-3" \
+ --model-provider "openai" \
+ --model-api-key "sk-..."
+
+# Full brief with explicit image paths
+
+node dist/cli.js generate examples/fitness-full.json --out-dir ./output
+
+# Interactive mode (Phase 5 stub)
+
+node dist/cli.js interactive
+
+# Help
+
+node dist/cli.js --help
+node dist/cli.js generate --help
+
 ## 📂 Output Structure
 
 see docs/output_and_campaign_brief_schema_outline.md

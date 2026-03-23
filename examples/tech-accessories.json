@@ -1,0 +1,24 @@
+{
+  "slug": "back-to-school-tech",
+  "name": "Back to School Tech",
+  "region": "US",
+  "audience": "College students and young professionals",
+  "message": "Gear up for the semester ahead",
+  "products": [
+    {
+      "name": "Wireless Earbuds",
+      "slug": "wireless-earbuds"
+    },
+    {
+      "name": "Laptop Stand",
+      "slug": "laptop-stand"
+    },
+    {
+      "name": "USB-C Hub",
+      "slug": "usb-c-hub"
+    },
+    {
+      "name": "Phone Charger Pad"
+    }
+  ]
+}

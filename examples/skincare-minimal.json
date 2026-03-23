@@ -1,0 +1,11 @@
+{
+  "name": "Summer Glow Collection",
+  "region": "UK",
+  "audience": "Skincare enthusiasts aged 25-40",
+  "message": "Your skin deserves better this summer",
+  "products": [
+    { "name": "Hydrating Serum" },
+    { "name": "SPF 50 Moisturizer" },
+    { "name": "Vitamin C Cleanser" }
+  ]
+}

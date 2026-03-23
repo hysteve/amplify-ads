@@ -1,0 +1,19 @@
+{
+  "slug": "spring-fitness-push",
+  "name": "Spring Fitness Push",
+  "region": "US",
+  "audience": "Fitness enthusiasts",
+  "message": "Fuel your workout with clean energy",
+  "products": [
+    {
+      "name": "Protein Bar",
+      "slug": "protein-bar",
+      "image": "assets/products/protein-bar/source.png"
+    },
+    {
+      "name": "Energy Drink",
+      "slug": "energy-drink",
+      "image": "assets/products/energy-drink/source.png"
+    }
+  ]
+}
