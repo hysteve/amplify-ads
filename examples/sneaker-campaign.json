@@ -3,6 +3,13 @@
   "region": "US",
   "audience": "18-35 sneaker enthusiasts",
   "message": "Step into summer with bold new styles",
+  "branding": {
+    "primaryColor": "#ff6b35",
+    "secondaryColor": "#004e89",
+    "textColor": "#ffffff",
+    "backgroundColor": "#1a1a2e",
+    "style": "bold and energetic"
+  },
   "products": [
     {
       "name": "Classic Sneaker",

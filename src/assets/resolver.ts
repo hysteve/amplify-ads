@@ -7,7 +7,7 @@ export type ResolutionResult = {
   name: string;
   description: string;
 } & (
-  | { found: true; imagePath: string }
+  | { found: true; imagePath: string; source: "explicit" | "convention" | "generated" | "enhanced" }
   | { found: false }
 );
 
@@ -22,17 +22,9 @@ async function fileExists(path: string): Promise<boolean> {
   }
 }
 
-async function findSourceImage(slug: string): Promise<string | null> {
+async function findImage(slug: string, prefix: string): Promise<string | null> {
   for (const ext of IMAGE_EXTENSIONS) {
-    const p = resolve("assets", "products", slug, `source.${ext}`);
-    if (await fileExists(p)) return p;
-  }
-  return null;
-}
-
-async function findGeneratedImage(slug: string): Promise<string | null> {
-  for (const ext of IMAGE_EXTENSIONS) {
-    const p = resolve("assets", "products", slug, `generated.${ext}`);
+    const p = resolve("assets", "products", slug, `${prefix}.${ext}`);
     if (await fileExists(p)) return p;
   }
   return null;
@@ -45,22 +37,28 @@ export async function resolveProduct(product: ProductBrief): Promise<ResolutionR
   if (product.image) {
     const explicitPath = resolve(product.image);
     if (await fileExists(explicitPath)) {
-      return { slug, name: product.name, description: product.description, found: true, imagePath: explicitPath };
+      return { slug, name: product.name, description: product.description, found: true, imagePath: explicitPath, source: "explicit" };
     }
   }
 
-  // 2. Convention-based source image
-  const source = await findSourceImage(slug);
+  // 2. Previously enhanced image
+  const enhanced = await findImage(slug, "enhanced");
+  if (enhanced) {
+    return { slug, name: product.name, description: product.description, found: true, imagePath: enhanced, source: "enhanced" };
+  }
+
+  // 3. Convention-based source image
+  const source = await findImage(slug, "source");
   if (source) {
-    return { slug, name: product.name, description: product.description, found: true, imagePath: source };
+    return { slug, name: product.name, description: product.description, found: true, imagePath: source, source: "convention" };
   }
 
-  // 3. Previously generated image
-  const generated = await findGeneratedImage(slug);
+  // 4. Previously generated image
+  const generated = await findImage(slug, "generated");
   if (generated) {
-    return { slug, name: product.name, description: product.description, found: true, imagePath: generated };
+    return { slug, name: product.name, description: product.description, found: true, imagePath: generated, source: "generated" };
   }
 
-  // 4. Needs generation
+  // 5. Needs generation
   return { slug, name: product.name, description: product.description, found: false };
 }

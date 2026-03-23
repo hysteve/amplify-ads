@@ -1,10 +1,10 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { resolve, join } from "node:path";
 import ora from "ora";
 import { TEMPLATES } from "../templates.js";
 import { renderAd, type AdCopy, type OutputFormat } from "./renderer.js";
 import { generateAdCopy, type CopywriterOptions } from "./copywriter.js";
-import type { CampaignBrief, ResolvedProduct, Meta, GeneratedProductMeta } from "../types.js";
+import type { Branding, CampaignBrief, ResolvedProduct, Meta, GeneratedProductMeta } from "../types.js";
 
 export type ComposeOptions = {
   outDir: string;
@@ -12,6 +12,8 @@ export type ComposeOptions = {
   templates?: string[] | undefined;
   copywriter?: CopywriterOptions | undefined;
   imageModel?: string | undefined;
+  branding?: Branding | undefined;
+  enhanceImages?: boolean | undefined;
 };
 
 export type ComposeResult = {
@@ -19,6 +21,24 @@ export type ComposeResult = {
   creatives: { product: string; template: string; path: string }[];
   meta: Meta;
 };
+
+const VERSION_RE = /^\d{3}$/;
+
+async function nextVersion(campaignDir: string): Promise<string> {
+  let max = 0;
+  try {
+    const entries = await readdir(campaignDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory() && VERSION_RE.test(entry.name)) {
+        const n = parseInt(entry.name, 10);
+        if (n > max) max = n;
+      }
+    }
+  } catch {
+    // Directory doesn't exist yet — first version
+  }
+  return String(max + 1).padStart(3, "0");
+}
 
 function ratioFilename(aspectRatio: string, format: OutputFormat): string {
   return `${aspectRatio.replace(/:/g, "-")}.${format}`;
@@ -38,8 +58,13 @@ export async function composeCreatives(
     throw new Error("No matching templates found");
   }
 
-  const campaignSlug = brief.slug ?? brief.name.toLowerCase().replace(/\s+/g, "-");
-  const outputDir = resolve(options.outDir, campaignSlug);
+  const branding = options.branding ?? brief.branding;
+  const baseSlug = brief.slug ?? brief.name.toLowerCase().replace(/\s+/g, "-");
+  const regionSlug = brief.region.toLowerCase().replace(/\s+/g, "-");
+  const campaignSlug = `${baseSlug}-${regionSlug}`;
+  const campaignDir = resolve(options.outDir, campaignSlug);
+  const version = await nextVersion(campaignDir);
+  const outputDir = join(campaignDir, version);
   await mkdir(outputDir, { recursive: true });
 
   const creatives: ComposeResult["creatives"] = [];
@@ -65,6 +90,8 @@ export async function composeCreatives(
           productImagePath: product.imagePath,
           copy,
           format,
+          branding,
+          renderMode: product.renderMode,
         });
 
         const filename = ratioFilename(template.aspectRatio, format);
@@ -87,6 +114,8 @@ export async function composeCreatives(
       ratios,
       sourceImage: product.imagePath,
       imageGenerated: product.generated,
+      imageEnhanced: product.enhanced,
+      renderMode: product.renderMode,
       copyGenerated: !!options.copywriter?.model,
       copy: { headline: copy.headline, cta: copy.cta ?? undefined },
     });
@@ -95,6 +124,7 @@ export async function composeCreatives(
   const templateIds = templates.map((t) => t.id);
 
   const meta: Meta = {
+    version,
     campaign: {
       name: brief.name,
       slug: campaignSlug,
@@ -102,11 +132,13 @@ export async function composeCreatives(
       region: brief.region,
       audience: brief.audience,
     },
+    branding: branding ?? undefined,
     generation: {
       imageModel: options.imageModel,
       copyModel: options.copywriter?.model,
       format,
       templates: templateIds,
+      enhanceImages: options.enhanceImages ?? false,
     },
     products: generatedProducts,
     createdAt: new Date().toISOString(),
