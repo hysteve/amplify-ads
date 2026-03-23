@@ -1,0 +1,31 @@
+{
+  "name": "Trail Ready 2026",
+  "region": "CA",
+  "audience": "Outdoor adventurers and weekend hikers",
+  "message": "Own the trail this season",
+  "branding": {
+    "primaryColor": "#4caf50",
+    "secondaryColor": "#ff9800",
+    "backgroundColor": "#1a2e1a",
+    "style": "rugged, natural, adventurous"
+  },
+  "products": [
+    {
+      "name": "Hiking Daypack",
+      "slug": "hiking-daypack",
+      "description": "Olive green 30L hiking backpack with orange zipper pulls, mesh side pockets, and a hydration port",
+      "image": "assets/products/hiking-daypack/source.png"
+    },
+    {
+      "name": "Trail Running Shoes",
+      "slug": "trail-running-shoes",
+      "description": "Lightweight trail runners in forest green and black with aggressive tread pattern and Gore-Tex upper"
+    },
+    {
+      "name": "Insulated Water Bottle",
+      "slug": "insulated-water-bottle",
+      "description": "Stainless steel 750ml water bottle in matte forest green with a bamboo cap",
+      "image": "assets/products/insulated-water-bottle/source.png"
+    }
+  ]
+}

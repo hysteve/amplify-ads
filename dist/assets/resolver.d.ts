@@ -6,6 +6,7 @@ export type ResolutionResult = {
 } & ({
     found: true;
     imagePath: string;
+    source: "explicit" | "convention" | "generated" | "enhanced";
 } | {
     found: false;
 });

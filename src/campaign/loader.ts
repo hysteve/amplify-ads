@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { slugify } from "../utils/slugify.js";
-import type { CampaignBrief } from "../types.js";
+import type { Branding, CampaignBrief } from "../types.js";
 
 export async function loadCampaign(filePath: string): Promise<CampaignBrief> {
   const raw = await readFile(filePath, "utf-8");
@@ -63,6 +63,8 @@ function validateCampaign(data: unknown): CampaignBrief {
 
   const name = obj["name"] as string;
 
+  const branding = validateBranding(obj["branding"]);
+
   return {
     name,
     slug:
@@ -73,5 +75,35 @@ function validateCampaign(data: unknown): CampaignBrief {
     audience: obj["audience"] as string,
     message: obj["message"] as string,
     products,
+    branding,
   };
+}
+
+const HEX_RE = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
+
+function validateBranding(raw: unknown): Branding | undefined {
+  if (raw === undefined || raw === null) return undefined;
+  if (typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error("branding must be an object");
+  }
+  const b = raw as Record<string, unknown>;
+  const result: Branding = {};
+
+  for (const key of ["primaryColor", "secondaryColor", "textColor", "backgroundColor"] as const) {
+    if (b[key] !== undefined) {
+      if (typeof b[key] !== "string" || !HEX_RE.test(b[key] as string)) {
+        throw new Error(`branding.${key} must be a hex color (e.g. "#ff6600")`);
+      }
+      result[key] = b[key] as string;
+    }
+  }
+
+  if (b["style"] !== undefined) {
+    if (typeof b["style"] !== "string" || (b["style"] as string).trim() === "") {
+      throw new Error("branding.style must be a non-empty string");
+    }
+    result.style = b["style"] as string;
+  }
+
+  return Object.keys(result).length > 0 ? result : undefined;
 }

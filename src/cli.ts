@@ -1,12 +1,25 @@
 #!/usr/bin/env node
 
+import { createInterface } from "node:readline";
 import { Command } from "commander";
 import chalk from "chalk";
 import { loadCampaign } from "./campaign/loader.js";
+import { checkMissingAssets } from "./assets/pipeline.js";
 import { resolveAllAssets } from "./assets/pipeline.js";
 import { composeCreatives } from "./compose/composer.js";
 import { loadConfig } from "./config.js";
+import type { RenderMode } from "./types.js";
 import type { OutputFormat } from "./compose/renderer.js";
+
+async function promptYesNo(question: string): Promise<boolean> {
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer.trim().toLowerCase().startsWith("y"));
+    });
+  });
+}
 
 const program = new Command();
 
@@ -23,6 +36,8 @@ program
   .option("--image-model <model>", "Model for image generation (default: google/gemini-2.5-flash-image)", "google/gemini-2.5-flash-image")
   .option("--generate-copy", "Generate ad copy (headline + CTA) via AI instead of using campaign message")
   .option("--copy-model <model>", "Model for AI ad copy (overrides AMPLIFY_TEXT_MODEL)")
+  .option("--enhance-images", "Enhance provided product images via img-to-img AI generation")
+  .option("--overlay-mode <mode>", "Force render mode for all products: placement or overlay")
   .option("--templates <ids>", "Comma-separated template IDs (square,story,landscape)", "square,story,landscape")
   .option("--format <format>", "Output format: png or webp", "png")
   .option("--env <path>", "Path to .env config file")
@@ -32,6 +47,8 @@ program
     imageModel: string;
     generateCopy?: boolean;
     copyModel?: string;
+    enhanceImages?: boolean;
+    overlayMode?: string;
     templates: string;
     format: string;
     env?: string;
@@ -47,6 +64,17 @@ program
       console.log(chalk.dim(`  Audience: ${brief.audience}`));
       console.log(chalk.dim(`  Message: ${brief.message}`));
       console.log(chalk.dim(`  Products: ${brief.products.map((p) => p.name).join(", ")}`));
+      if (brief.branding) {
+        const b = brief.branding;
+        const parts = [
+          b.primaryColor && `primary: ${b.primaryColor}`,
+          b.secondaryColor && `secondary: ${b.secondaryColor}`,
+          b.style && `style: ${b.style}`,
+        ].filter(Boolean);
+        if (parts.length > 0) {
+          console.log(chalk.dim(`  Branding: ${parts.join(", ")}`));
+        }
+      }
       console.log(chalk.dim(`  Output: ${options.outDir}`));
       console.log();
 
@@ -55,9 +83,24 @@ program
         process.env.AI_GATEWAY_API_KEY = apiKey;
       }
       const imageModel = options.imageModel ?? config.imageModel ?? "google/gemini-2.5-flash-image";
-      const copyModel = options.copyModel ?? config.textModel;
-      const generateCopy = options.generateCopy ?? !!copyModel;
+      const generateCopy = options.generateCopy ?? false;
+      const copyModel = generateCopy ? (options.copyModel ?? config.textModel) : undefined;
       const format = (options.format === "webp" ? "webp" : "png") as OutputFormat;
+      const enhanceImages = options.enhanceImages ?? false;
+
+      // Validate overlay mode
+      let overlayMode: RenderMode | undefined;
+      if (options.overlayMode) {
+        if (options.overlayMode !== "placement" && options.overlayMode !== "overlay") {
+          console.error(chalk.red("Error:"), "--overlay-mode must be 'placement' or 'overlay'");
+          process.exit(1);
+        }
+        overlayMode = options.overlayMode;
+      }
+
+      if (enhanceImages && !apiKey) {
+        console.log(chalk.yellow("⚠ --enhance-images requires an API key, ignoring"));
+      }
 
       // Resolve / generate product assets
       console.log(chalk.bold("Resolving assets..."));
@@ -65,6 +108,9 @@ program
         generator: apiKey
           ? { model: imageModel }
           : undefined,
+        enhanceImages: enhanceImages && !!apiKey,
+        branding: brief.branding,
+        overlayMode,
       });
 
       if (resolved.length === 0) {
@@ -85,6 +131,8 @@ program
           ? { model: copyModel }
           : undefined,
         imageModel: apiKey ? imageModel : undefined,
+        branding: brief.branding,
+        enhanceImages,
       });
 
       console.log(chalk.green(`\n✓ ${result.creatives.length} creative(s) generated`));
@@ -94,14 +142,6 @@ program
       console.error(chalk.red("Error:"), (err as Error).message);
       process.exit(1);
     }
-  });
-
-program
-  .command("interactive")
-  .description("Build a campaign brief interactively")
-  .action(async () => {
-    // TODO: interactive mode
-    console.log(chalk.yellow("Interactive mode is not yet implemented."));
   });
 
 program.parse();

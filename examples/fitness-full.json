@@ -4,6 +4,12 @@
   "region": "US",
   "audience": "Fitness enthusiasts",
   "message": "Fuel your workout with clean energy",
+  "branding": {
+    "primaryColor": "#00e676",
+    "secondaryColor": "#212121",
+    "backgroundColor": "#121212",
+    "style": "high contrast, athletic, bold"
+  },
   "products": [
     {
       "name": "Protein Bar",

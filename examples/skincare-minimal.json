@@ -3,6 +3,12 @@
   "region": "UK",
   "audience": "Skincare enthusiasts aged 25-40",
   "message": "Your skin deserves better this summer",
+  "branding": {
+    "primaryColor": "#e8a87c",
+    "textColor": "#ffffff",
+    "backgroundColor": "#2d2d3f",
+    "style": "soft, elegant, clean"
+  },
   "products": [
     { "name": "Hydrating Serum", "description": "Clear glass dropper bottle with pale gold serum, minimalist white label" },
     { "name": "SPF 50 Moisturizer", "description": "Soft-squeeze tube in pastel coral with a matte finish, broad-spectrum sunscreen moisturizer" },

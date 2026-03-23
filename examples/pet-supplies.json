@@ -1,0 +1,30 @@
+{
+  "name": "Happy Paws Summer",
+  "region": "US",
+  "audience": "Dog owners aged 25-45",
+  "message": "Everything your best friend needs this summer",
+  "branding": {
+    "primaryColor": "#ff7043",
+    "secondaryColor": "#5c6bc0",
+    "textColor": "#ffffff",
+    "backgroundColor": "#1a1a3e",
+    "style": "playful, friendly, vibrant"
+  },
+  "products": [
+    {
+      "name": "Cooling Dog Bed",
+      "description": "Elevated mesh dog bed in navy blue with a cooling gel insert and aluminum frame",
+      "image": "assets/products/cooling-dog-bed/source.png"
+    },
+    {
+      "name": "Portable Water Bowl",
+      "description": "Collapsible silicone water bowl in coral orange with a carabiner clip"
+    },
+    {
+      "name": "Reflective Harness",
+      "slug": "reflective-harness",
+      "description": "Adjustable padded dog harness in deep purple with reflective stitching and a front clip",
+      "image": "assets/products/reflective-harness/source.jpg"
+    }
+  ]
+}

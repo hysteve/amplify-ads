@@ -1,0 +1,28 @@
+{
+  "name": "Cold Brew Launch",
+  "region": "US",
+  "audience": "Coffee lovers and commuters",
+  "message": "Smooth cold brew, ready when you are",
+  "branding": {
+    "primaryColor": "#c8a27a",
+    "secondaryColor": "#2c1810",
+    "textColor": "#ffffff",
+    "backgroundColor": "#1b1008",
+    "style": "warm, premium, artisan"
+  },
+  "products": [
+    {
+      "name": "Nitro Cold Brew Can",
+      "description": "Tall slim aluminum can in matte black with copper foil lettering, nitrogen-infused cold brew coffee",
+      "image": "assets/products/nitro-cold-brew-can/source.png"
+    },
+    {
+      "name": "Oat Milk Latte Bottle",
+      "description": "Rounded glass bottle with a cream-colored oat milk latte and a brown kraft paper label"
+    },
+    {
+      "name": "Espresso Shot Pack",
+      "description": "Row of three small amber glass bottles with espresso shots, sealed with gold foil caps"
+    }
+  ]
+}

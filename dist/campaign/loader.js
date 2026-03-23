@@ -48,6 +48,7 @@ function validateCampaign(data) {
         };
     });
     const name = obj["name"];
+    const branding = validateBranding(obj["branding"]);
     return {
         name,
         slug: typeof obj["slug"] === "string" && obj["slug"].trim() !== ""
@@ -57,6 +58,32 @@ function validateCampaign(data) {
         audience: obj["audience"],
         message: obj["message"],
         products,
+        branding,
     };
+}
+const HEX_RE = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
+function validateBranding(raw) {
+    if (raw === undefined || raw === null)
+        return undefined;
+    if (typeof raw !== "object" || Array.isArray(raw)) {
+        throw new Error("branding must be an object");
+    }
+    const b = raw;
+    const result = {};
+    for (const key of ["primaryColor", "secondaryColor", "textColor", "backgroundColor"]) {
+        if (b[key] !== undefined) {
+            if (typeof b[key] !== "string" || !HEX_RE.test(b[key])) {
+                throw new Error(`branding.${key} must be a hex color (e.g. "#ff6600")`);
+            }
+            result[key] = b[key];
+        }
+    }
+    if (b["style"] !== undefined) {
+        if (typeof b["style"] !== "string" || b["style"].trim() === "") {
+            throw new Error("branding.style must be a non-empty string");
+        }
+        result.style = b["style"];
+    }
+    return Object.keys(result).length > 0 ? result : undefined;
 }
 //# sourceMappingURL=loader.js.map
