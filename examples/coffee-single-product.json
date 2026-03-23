@@ -4,6 +4,9 @@
   "audience": "Coffee lovers and commuters",
   "message": "Smooth cold brew, ready when you are",
   "products": [
-    { "name": "Nitro Cold Brew Can", "description": "Tall slim aluminum can in matte black with copper foil lettering, nitrogen-infused cold brew coffee" }
+    {
+      "name": "Nitro Cold Brew Can",
+      "description": "Tall slim aluminum can in matte black with copper foil lettering, nitrogen-infused cold brew coffee"
+    }
   ]
 }

@@ -10,8 +10,17 @@
     "style": "soft, elegant, clean"
   },
   "products": [
-    { "name": "Hydrating Serum", "description": "Clear glass dropper bottle with pale gold serum, minimalist white label" },
-    { "name": "SPF 50 Moisturizer", "description": "Soft-squeeze tube in pastel coral with a matte finish, broad-spectrum sunscreen moisturizer" },
-    { "name": "Vitamin C Cleanser", "description": "Frosted orange pump bottle with a citrus-inspired design, brightening facial cleanser" }
+    {
+      "name": "Hydrating Serum",
+      "description": "Clear glass dropper bottle with pale gold serum, minimalist white label"
+    },
+    {
+      "name": "SPF 50 Moisturizer",
+      "description": "Soft-squeeze tube in pastel coral with a matte finish, broad-spectrum sunscreen moisturizer"
+    },
+    {
+      "name": "Vitamin C Cleanser",
+      "description": "Frosted orange pump bottle with a citrus-inspired design, brightening facial cleanser"
+    }
   ]
 }

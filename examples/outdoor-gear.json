@@ -14,7 +14,7 @@
       "name": "Hiking Daypack",
       "slug": "hiking-daypack",
       "description": "Olive green 30L hiking backpack with orange zipper pulls, mesh side pockets, and a hydration port",
-      "image": "assets/products/hiking-daypack/source.png"
+      "image": "assets/products/hiking-daypack/hiking-backpack.jpg"
     },
     {
       "name": "Trail Running Shoes",
@@ -25,7 +25,7 @@
       "name": "Insulated Water Bottle",
       "slug": "insulated-water-bottle",
       "description": "Stainless steel 750ml water bottle in matte forest green with a bamboo cap",
-      "image": "assets/products/insulated-water-bottle/source.png"
+      "image": "assets/products/insulated-water-bottle/water-bottle.jpg"
     }
   ]
 }
