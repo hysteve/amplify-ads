@@ -4,27 +4,39 @@ A local-first CLI tool that generates social ad creatives across multiple aspect
 
 ---
 
+# Objectives
+
+- Accept campaign brief (JSON)
+- Support multiple products
+- Reuse local assets when available
+- Generate missing assets via AI
+- Compose creatives using templates (multiple aspect ratios)
+- Export PNG/WebP outputs
+- Clean output directory structure
+
+---
+
 ## Features
 
-| Feature | Status |
-|---------|--------|
-| Campaign brief input (JSON) with validation | Implemented |
-| Multi-product support per campaign | Implemented |
+| Feature                                                                        | Status      |
+| ------------------------------------------------------------------------------ | ----------- |
+| Campaign brief input (JSON) with validation                                    | Implemented |
+| Multi-product support per campaign                                             | Implemented |
 | Local asset resolution (explicit path, convention-based, previously generated) | Implemented |
-| AI image generation via Vercel AI Gateway (default: Gemini 2.5 Flash) | Implemented |
-| Product descriptions used in image generation prompts | Implemented |
-| Template-based composition (1:1 square, 9:16 story, 16:9 landscape) | Implemented |
-| Overlay gradient composition (per-template image-to-background fade) | Implemented |
-| PNG and WebP output formats | Implemented |
-| AI ad copy generation (headline + CTA) with fallback to campaign message | Implemented |
-| Versioned output directories with `meta.json` tracking | Implemented |
-| Region-scoped output folders (`{campaign}-{region}/001/…`) | Implemented |
-| `.env` file support with CLI flag overrides | Implemented |
-| Auto-generated slugs from product/campaign names | Implemented |
-| Branding — brand colors, text color, background, and style hints | Implemented |
-| WCAG AA contrast checking — text and CTA colors auto-corrected | Implemented |
-| Img-to-img enhancement — enhance provided images via AI (`--enhance-images`) | Implemented |
-| Dynamic font sizing — short headlines scale up, long headlines scale down | Implemented |
+| AI image generation via Vercel AI Gateway (default: Gemini 2.5 Flash)          | Implemented |
+| Product descriptions used in image generation prompts                          | Implemented |
+| Template-based composition (1:1 square, 9:16 story, 16:9 landscape)            | Implemented |
+| Overlay gradient composition (per-template image-to-background fade)           | Implemented |
+| PNG and WebP output formats                                                    | Implemented |
+| AI ad copy generation (headline + CTA) with fallback to campaign message       | Implemented |
+| Versioned output directories with `meta.json` tracking                         | Implemented |
+| Region-scoped output folders (`{campaign}-{region}/001/…`)                     | Implemented |
+| `.env` file support with CLI flag overrides                                    | Implemented |
+| Auto-generated slugs from product/campaign names                               | Implemented |
+| Branding — brand colors, text color, background, and style hints               | Implemented |
+| WCAG AA contrast checking — text and CTA colors auto-corrected                 | Implemented |
+| Img-to-img enhancement — enhance provided images via AI (`--enhance-images`)   | Implemented |
+| Dynamic font sizing — short headlines scale up, long headlines scale down      | Implemented |
 
 ---
 
@@ -59,18 +71,18 @@ amplify-ads generate <campaign-file> [options]
 
 **Options:**
 
-| Flag | Description | Default |
-|------|-------------|---------|
-| `--api-key <key>` | Vercel AI Gateway API key (overrides `AI_GATEWAY_API_KEY` env var) | — |
-| `--image-model <model>` | Model for AI image generation | `google/gemini-2.5-flash-image` |
-| `--generate-copy` | Generate ad copy (headline + CTA) via AI instead of using the campaign message | off |
-| `--copy-model <model>` | Model for AI ad copy generation (requires `--generate-copy`, overrides `AMPLIFY_TEXT_MODEL`) | — |
-| `--enhance-images` | Enhance provided product images via img-to-img AI generation (requires `--api-key`) | off |
-| `--overlay-mode <mode>` | Force render mode for all products: `placement` or `overlay` | auto |
-| `--templates <ids>` | Comma-separated template IDs | `square,story,landscape` |
-| `--format <format>` | Output format: `png` or `webp` | `png` |
-| `--env <path>` | Path to `.env` config file | `.env` |
-| `--out-dir <dir>` | Output directory for creatives | `output` |
+| Flag                    | Description                                                                                  | Default                         |
+| ----------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- |
+| `--api-key <key>`       | Vercel AI Gateway API key (overrides `AI_GATEWAY_API_KEY` env var)                           | —                               |
+| `--image-model <model>` | Model for AI image generation                                                                | `google/gemini-2.5-flash-image` |
+| `--generate-copy`       | Generate ad copy (headline + CTA) via AI instead of using the campaign message               | off                             |
+| `--copy-model <model>`  | Model for AI ad copy generation (requires `--generate-copy`, overrides `AMPLIFY_TEXT_MODEL`) | —                               |
+| `--enhance-images`      | Enhance provided product images via img-to-img AI generation (requires `--api-key`)          | off                             |
+| `--overlay-mode <mode>` | Force render mode for all products: `placement` or `overlay`                                 | auto                            |
+| `--templates <ids>`     | Comma-separated template IDs                                                                 | `square,story,landscape`        |
+| `--format <format>`     | Output format: `png` or `webp`                                                               | `png`                           |
+| `--env <path>`          | Path to `.env` config file                                                                   | `.env`                          |
+| `--out-dir <dir>`       | Output directory for creatives                                                               | `output`                        |
 
 ### Environment Variables
 
@@ -219,23 +231,23 @@ amplify-ads generate --help
 }
 ```
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `name` | Yes | Campaign name |
-| `region` | Yes | Target region (used in output folder naming) |
-| `audience` | Yes | Target audience description |
-| `message` | Yes | Campaign headline / default message |
-| `products` | Yes | Array of products (at least one) |
-| `products[].name` | Yes | Product name |
-| `products[].description` | Yes | Short product description (used for AI image generation) |
-| `products[].slug` | No | URL-safe identifier (auto-generated from name if omitted) |
-| `products[].image` | No | Explicit path to a product image |
-| `branding` | No | Brand style configuration (see below) |
-| `branding.primaryColor` | No | Hex color for CTA backgrounds and AI prompt hints |
-| `branding.secondaryColor` | No | Hex color for accents (defaults to primaryColor) |
-| `branding.textColor` | No | Hex color for headline text (auto-corrected for WCAG AA contrast) |
-| `branding.backgroundColor` | No | Hex color for canvas background (image fades into this) |
-| `branding.style` | No | Freeform style hint for AI image generation (e.g. `"minimalist"`, `"bold and energetic"`) |
+| Field                      | Required | Description                                                                               |
+| -------------------------- | -------- | ----------------------------------------------------------------------------------------- |
+| `name`                     | Yes      | Campaign name                                                                             |
+| `region`                   | Yes      | Target region (used in output folder naming)                                              |
+| `audience`                 | Yes      | Target audience description                                                               |
+| `message`                  | Yes      | Campaign headline / default message                                                       |
+| `products`                 | Yes      | Array of products (at least one)                                                          |
+| `products[].name`          | Yes      | Product name                                                                              |
+| `products[].description`   | Yes      | Short product description (used for AI image generation)                                  |
+| `products[].slug`          | No       | URL-safe identifier (auto-generated from name if omitted)                                 |
+| `products[].image`         | No       | Explicit path to a product image                                                          |
+| `branding`                 | No       | Brand style configuration (see below)                                                     |
+| `branding.primaryColor`    | No       | Hex color for CTA backgrounds and AI prompt hints                                         |
+| `branding.secondaryColor`  | No       | Hex color for accents (defaults to primaryColor)                                          |
+| `branding.textColor`       | No       | Hex color for headline text (auto-corrected for WCAG AA contrast)                         |
+| `branding.backgroundColor` | No       | Hex color for canvas background (image fades into this)                                   |
+| `branding.style`           | No       | Freeform style hint for AI image generation (e.g. `"minimalist"`, `"bold and energetic"`) |
 
 ### How Composition Works
 
@@ -249,6 +261,7 @@ Each ad creative is composed in layers:
 The overlay gradient is per-template: bottom-to-top for square, top-to-bottom for story, left-to-right for landscape. The 100% opaque stop aligns with the image edge so the rolloff is smooth and the product remains fully visible.
 
 **Render modes** control how the product image is fitted:
+
 - **Placement** (default for provided images) — `object-fit: contain`, product shown in full
 - **Overlay** (default for generated/enhanced images) — `object-fit: cover`, image fills the canvas for a more immersive look
 
