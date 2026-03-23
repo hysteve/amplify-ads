@@ -6,62 +6,32 @@ CLI tool that generates social ad creatives (1:1, 9:16, 16:9) from campaign brie
 
 ---
 
-## Phase 1: Project Setup & Campaign Input
+## Phase 1: Project Setup & Campaign Input ✅
 
 **Goal:** CLI skeleton + campaign brief parsing and validation.
 
 ### Tasks
 
-1. **Configure tsconfig for build output**
-   - Set `rootDir: "./src"`, `outDir: "./dist"`, add `"node"` to types
-   - Ensure ESM output works with `"type": "module"` in package.json
-
-2. **Define types** — `src/types.ts`
-   - `CampaignBrief`, `ProductBrief` (from schema doc)
-   - `ResolvedProduct` (slug + resolved image path)
-   - `TemplateSpec` (from templates doc)
-   - `Meta` (meta.json shape)
-
-3. **Slugify utility** — `src/utils/slugify.ts`
-   - Convert names to URL-safe slugs (lowercase, hyphens, strip special chars)
-
-4. **Campaign loader + validator** — `src/campaign/loader.ts`
-   - Read JSON file, validate required fields (`name`, `region`, `audience`, `message`, `products[]`)
-   - Derive slugs where missing (campaign slug, product slugs)
-   - Return typed `CampaignBrief`
-
-5. **CLI entry point** — `src/cli.ts`
-   - `generate <campaign.json>` command with flags: `--model`, `--model-provider`, `--model-api-key`, `--out-dir`
-   - `interactive` command (stub for now)
-   - Wire up Commander, parse args, call loader
+1. ~~**Configure tsconfig for build output**~~
+2. ~~**Define types** — `src/types.ts`~~
+3. ~~**Slugify utility** — `src/utils/slugify.ts`~~
+4. ~~**Campaign loader + validator** — `src/campaign/loader.ts`~~
+5. ~~**CLI entry point** — `src/cli.ts`~~
 
 ### Deliverable
 Running `amplify-ads generate campaign.json` parses and prints the campaign brief.
 
 ---
 
-## Phase 2: Asset Resolution & Image Generation
+## Phase 2: Asset Resolution & Image Generation ✅
 
 **Goal:** Resolve existing product images or generate missing ones via AI.
 
 ### Tasks
 
-1. **Asset resolver** — `src/assets/resolver.ts`
-   - Implement resolution chain:
-     1. Explicit `product.image` path → use if file exists
-     2. `assets/products/<slug>/source.{png,jpg,webp}` → use if found
-     3. `assets/products/<slug>/generated.png` → reuse if exists
-     4. Otherwise → mark for generation
-
-2. **Image generator** — `src/assets/generator.ts`
-   - Use Vercel AI SDK (`ai` package) to generate product images
-   - Accept model, provider, and API key from CLI flags
-   - Build a prompt from product name + campaign context (audience, message)
-   - Save generated image to `assets/products/<slug>/generated.png`
-
-3. **Asset pipeline orchestrator** — `src/assets/pipeline.ts`
-   - For each product: resolve → generate if needed → return `ResolvedProduct[]`
-   - Add ora spinners for generation progress
+1. ~~**Asset resolver** — `src/assets/resolver.ts`~~
+2. ~~**Image generator** — `src/assets/generator.ts`~~
+3. ~~**Asset pipeline orchestrator** — `src/assets/pipeline.ts`~~
 
 ### Deliverable
 Running `generate` resolves all product images (local or AI-generated) and writes them to `assets/products/`.

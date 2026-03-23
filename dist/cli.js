@@ -2,6 +2,7 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { loadCampaign } from "./campaign/loader.js";
+import { resolveAllAssets } from "./assets/pipeline.js";
 const program = new Command();
 program
     .name("amplify-ads")
@@ -24,7 +25,20 @@ program
         console.log(chalk.dim(`  Message: ${brief.message}`));
         console.log(chalk.dim(`  Products: ${brief.products.map((p) => p.name).join(", ")}`));
         console.log(chalk.dim(`  Output: ${options.outDir}`));
-        // TODO: Phase 2+ — asset resolution, composition, export
+        console.log();
+        // Resolve / generate product assets
+        console.log(chalk.bold("Resolving assets..."));
+        const resolved = await resolveAllAssets(brief, {
+            generator: options.model
+                ? { model: options.model, apiKey: options.modelApiKey }
+                : undefined,
+        });
+        if (resolved.length === 0) {
+            console.log(chalk.yellow("\nNo product images resolved. Nothing to compose."));
+            return;
+        }
+        console.log(chalk.green(`\n✓ ${resolved.length} product(s) ready`));
+        // TODO: Phase 3+ — composition, export
     }
     catch (err) {
         console.error(chalk.red("Error:"), err.message);
