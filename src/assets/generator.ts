@@ -41,7 +41,9 @@ export async function generateProductImage(
     `at least 25-30% clear space on all sides so text can overlay the edges without`,
     `covering the product. The background should be smooth, atmospheric, and on-brand,`,
     `not a plain studio backdrop. The product must be the clear focal point but should`,
-    `not fill the entire frame.`,
+    `not fill the entire frame. There should be no visual elements that would interfere`,
+    `with text overlays. The background should extend to the edges of the image without`,
+    `harsh lines or borders.`,
   ]
     .filter(Boolean)
     .join(" ");
@@ -57,7 +59,12 @@ export async function generateProductImage(
 
   const file = result.files[0]!;
   const ext = file.mediaType === "image/jpeg" ? "jpg" : "png";
-  const outPath = resolve("assets", "products", product.slug, `generated.${ext}`);
+  const outPath = resolve(
+    "assets",
+    "products",
+    product.slug,
+    `generated.${ext}`,
+  );
 
   await mkdir(dirname(outPath), { recursive: true });
   await writeFile(outPath, file.uint8Array);
@@ -81,9 +88,10 @@ export async function enhanceProductImage(
     : "";
 
   const imgBuf = await readFile(sourceImagePath);
-  const ext = sourceImagePath.endsWith(".jpg") || sourceImagePath.endsWith(".jpeg")
-    ? "jpeg"
-    : "png";
+  const ext =
+    sourceImagePath.endsWith(".jpg") || sourceImagePath.endsWith(".jpeg")
+      ? "jpeg"
+      : "png";
   const dataUri = `data:image/${ext};base64,${imgBuf.toString("base64")}`;
 
   const prompt = [
@@ -97,6 +105,10 @@ export async function enhanceProductImage(
     `COMPOSITION: Leave generous breathing room around the product — at least 25-30%`,
     `clear space on all sides so text can overlay the edges without covering the subject.`,
     `Extend the background smoothly and atmospherically to fill the full frame.`,
+    `The product must be the clear focal point but should not fill the entire frame;`,
+    `resize and arrange it as needed. There should be no visual elements that would interfere`,
+    `with text overlays. The background should extend to the edges of the image without`,
+    `harsh lines or borders.`,
   ]
     .filter(Boolean)
     .join(" ");
@@ -115,12 +127,19 @@ export async function enhanceProductImage(
   });
 
   if (!result.files || result.files.length === 0) {
-    throw new Error(`Model ${options.model} returned no images for enhancement`);
+    throw new Error(
+      `Model ${options.model} returned no images for enhancement`,
+    );
   }
 
   const outFile = result.files[0]!;
   const outExt = outFile.mediaType === "image/jpeg" ? "jpg" : "png";
-  const outPath = resolve("assets", "products", product.slug, `enhanced.${outExt}`);
+  const outPath = resolve(
+    "assets",
+    "products",
+    product.slug,
+    `enhanced.${outExt}`,
+  );
 
   await mkdir(dirname(outPath), { recursive: true });
   await writeFile(outPath, outFile.uint8Array);
@@ -131,10 +150,11 @@ export async function enhanceProductImage(
 function buildColorHints(branding?: Branding | undefined): string {
   if (!branding) return "";
   const parts: string[] = [];
-  if (branding.primaryColor) parts.push(`primary brand color ${branding.primaryColor}`);
-  if (branding.secondaryColor) parts.push(`secondary color ${branding.secondaryColor}`);
-  if (branding.backgroundColor) parts.push(`background tone ${branding.backgroundColor}`);
-  return parts.length > 0
-    ? `Color palette hints: ${parts.join(", ")}.`
-    : "";
+  if (branding.primaryColor)
+    parts.push(`primary brand color ${branding.primaryColor}`);
+  if (branding.secondaryColor)
+    parts.push(`secondary color ${branding.secondaryColor}`);
+  if (branding.backgroundColor)
+    parts.push(`background tone ${branding.backgroundColor}`);
+  return parts.length > 0 ? `Color palette hints: ${parts.join(", ")}.` : "";
 }
